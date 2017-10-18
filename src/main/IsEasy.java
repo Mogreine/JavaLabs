@@ -37,10 +37,10 @@ public class IsEasy {
         ArrayList<Integer> minimums = new ArrayList<>();
         arr.add(startElement);
         for (int i = 1; i < amount; i++) {
-            if (arr.size() == window) {
+            arr.add((int) ((long) arr.getLast() * x + y) % 1000000007);
+            if (arr.size() > window) {
                 minimums.add(arr.pollFirst());
             }
-            arr.add((int) ((long) arr.getLast() * x + y) % 1000000007);
             for (int j = arr.size() - 2, counter = 1; j >= 0 && counter < window; j--, counter++) {
                 if (arr.getLast() < arr.get(j)) {
                     arr.set(j, arr.getLast());
