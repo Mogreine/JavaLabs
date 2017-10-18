@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Queue {
+public class IQueue {
 
     public static class MyQueue<T> {
         private LinkedList<T> elements;
