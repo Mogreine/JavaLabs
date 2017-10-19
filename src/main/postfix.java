@@ -29,7 +29,7 @@ public class postfix {
                 numbers.push(Double.parseDouble(temp));
             }
         }
-        System.out.println(String.format("%.4f", numbers.pop()));
+        System.out.printf("%.6f", numbers.pop());
     }
 
     static Stack<Double> getAnswer(Stack<Double> numbers, Queue<String> operations) {
