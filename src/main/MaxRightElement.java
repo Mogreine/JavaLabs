@@ -27,24 +27,18 @@ public class MaxRightElement {
         startElement = Integer.parseInt(separatedData.nextToken());
         x = Integer.parseInt(separatedData.nextToken());
         y = Integer.parseInt(separatedData.nextToken());
-        int[] arr = fillArray(amount, startElement, x, y);
-        long sum = getIndexSum(arr);
+        long sum = getIndexSum(amount, startElement, x, y);
         System.out.println(sum);
     }
 
-    static int[] fillArray(int amount, int startElement, int x, int y) {
-        int[] arr = new int[amount];
-        arr[0] = startElement;
-        for (int i = 1; i < arr.length; i++) {
-            arr[i] = (int) (((long) arr[i - 1] * x + y) % 1000000007);
-        }
-        return arr;
-    }
-
-    static long getIndexSum(int[] array) {
+    static long getIndexSum(int amount, int startElement, int x, int y) {
         Stack<Integer> sequence = new Stack<>();
+        int[] array = new int[amount];
+        array[0] = startElement;
+        sequence.push(startElement);
         long sum = 0;
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 1; i < array.length; i++) {
+            array[i] = (int) (((long) array[i - 1] * x + y) % 1000000007);
             if (sequence.isEmpty() || array[i] <= sequence.peek()) {
                 sequence.push(array[i]);
             }
