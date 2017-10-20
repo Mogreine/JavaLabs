@@ -1,10 +1,7 @@
 package main;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 
 public class MaxRightElement {
@@ -14,46 +11,36 @@ public class MaxRightElement {
                 y,
                 startElement,
                 amount;
-
-        StringBuilder data = new StringBuilder();
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
-            data.append(in.readLine()).append(" ");
-            data.append(in.readLine());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        StringTokenizer separatedData = new StringTokenizer(data.toString(), " ");
-        amount = Integer.parseInt(separatedData.nextToken());
-        startElement = Integer.parseInt(separatedData.nextToken());
-        x = Integer.parseInt(separatedData.nextToken());
-        y = Integer.parseInt(separatedData.nextToken());
+        Scanner in = new Scanner(System.in);
+        amount = in.nextInt();
+        startElement = in.nextInt();
+        x = in.nextInt();
+        y = in.nextInt();
+        in.close();
         long sum = getIndexSum(amount, startElement, x, y);
         System.out.println(sum);
     }
 
     static long getIndexSum(int amount, int startElement, int x, int y) {
         Stack<Integer> sequence = new Stack<>();
-        int[] array = new int[amount];
-        array[0] = startElement;
+        int prevElem = startElement;
+        int actualElement = 0;
         sequence.push(startElement);
-        long sum = 0;
-        for (int i = 1; i < array.length; i++) {
-            array[i] = (int) (((long) array[i - 1] * x + y) % 1000000007);
-            if (sequence.isEmpty() || array[i] <= sequence.peek()) {
-                sequence.push(array[i]);
+	    long sum = 0;
+        for (int i = 1; i < amount; i++, prevElem = actualElement) {
+            actualElement = (int) (((long) prevElem * x + y) % 1000000007);
+            if (sequence.isEmpty() || actualElement <= sequence.peek()) {
+                sequence.push(actualElement);
             }
             else {
-                while (!sequence.empty() && sequence.peek() < array[i]) {
+                while (!sequence.isEmpty() && sequence.peek() < actualElement) {
                     sequence.pop();
                     sum += i;
                 }
-                sequence.push(array[i]);
+                sequence.push(actualElement);
             }
         }
-        while (!sequence.empty()) {
-            sum += -1;
-            sequence.pop();
-        }
+        sum -= sequence.size();
         return sum;
     }
 
