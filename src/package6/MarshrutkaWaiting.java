@@ -1,13 +1,12 @@
-package main;
+package package6;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
+import java.util.TreeMap;
 
-public class lab2 {
+public class MarshrutkaWaiting {
 
     public static void main(String[] args) {
         int size = 0;
@@ -20,23 +19,20 @@ public class lab2 {
             numbersStr = "";
             e.printStackTrace();
         }
-
         StringTokenizer numbers = new StringTokenizer(numbersStr, " ");
-        ArrayList<Integer> notUnique = new ArrayList<>(size);
-        TreeSet<Integer> uniqueNumbers = new TreeSet<>();
-        for (int i = 1; i <= size; i++) {
-            if (!uniqueNumbers.add(Integer.parseInt(numbers.nextToken()))) {
-                notUnique.add(i);
+        TreeMap<Integer, Integer> marshrutki = new TreeMap<>();
+        int max = 0;
+        for (int i = 0; i < size; i++) {
+            int marshNum = Integer.parseInt(numbers.nextToken());
+            Integer prevTime = marshrutki.put(marshNum, i);
+            if (prevTime != null) {
+                int temp = i - prevTime;
+                if (temp > max) {
+                    max = temp;
+                }
             }
         }
-        if (!notUnique.isEmpty()) {
-            for (Integer elem : notUnique) {
-                System.out.print(elem + " ");
-            }
-        }
-        else {
-            System.out.println(0);
-        }
+        System.out.print(max);
     }
 
 }
