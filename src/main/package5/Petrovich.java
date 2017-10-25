@@ -1,4 +1,4 @@
-package main;
+package main.package5;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,9 +61,15 @@ public class Petrovich {
                     answer += String.valueOf(allItemsCost);
                     break;
                 case '4':
+                    if (items.size() == 0) {
+                        return "0";
+                    }
                     answer += String.valueOf(maxCosts.peek());
                     break;
                 case '5':
+                    if (items.size() == 0) {
+                        return "0";
+                    }
                     answer += String.valueOf(items.search(maxCosts.peek()));
                     break;
             }

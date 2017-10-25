@@ -1,4 +1,4 @@
-package main;
+package main.package5;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,24 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class IsEasy {
+
+    public static class WeiredQueue {
+        int size;
+
+        LinkedList<Integer> elements;
+        LinkedList<Integer> minimums;
+
+        WeiredQueue() {
+            size = 0;
+            elements = new LinkedList<>();
+            minimums = new LinkedList<>();
+        }
+
+        void push(int value) {
+            elements.add(value);
+
+        }
+    }
 
     public static void main(String[] args) {
         int     x,
@@ -33,23 +51,17 @@ public class IsEasy {
     }
 
     static int getSumMin(int amount, int window, int startElement, int x, int y) {
-        LinkedList<Integer> arr = new LinkedList<>();
-        ArrayList<Integer> minimums = new ArrayList<>();
-        arr.add(startElement);
+        LinkedList<Integer> minimums = new LinkedList<>();
+        int     sum = 0,
+                prev = 0,
+                cur = 0;
+        prev = startElement;
+        minimums.add(prev);
         for (int i = 1; i < amount; i++) {
-            arr.add((int) ((long) arr.getLast() * x + y) % 1000000007);
-            if (arr.size() > window) {
-                minimums.add(arr.pollFirst());
+            int num = (int) (((long) prev * x + y) % 1000000007);
+            if (minimums.size() == window) {
+
             }
-            for (int j = arr.size() - 2, counter = 1; j >= 0 && counter < window; j--, counter++) {
-                if (arr.getLast() < arr.get(j)) {
-                    arr.set(j, arr.getLast());
-                }
-            }
-        }
-        int sum = arr.pollFirst();
-        for (Integer minimum : minimums) {
-            sum += minimum;
         }
         return sum;
     }
