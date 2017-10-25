@@ -1,5 +1,10 @@
 package package6;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
 public class MyTree {
 
     static class ITree <T extends Comparable<T>> {
@@ -16,8 +21,8 @@ public class MyTree {
             }
         }
 
-        int size;
-        Node<T> root;
+        private int size;
+        private Node<T> root;
 
         public ITree() {
             this(0);
@@ -44,24 +49,101 @@ public class MyTree {
         }
 
         public void add(T value) {
-            add(root, value);
+            root = add(root, value);
         }
 
-        public void add(Node<T> node, T value) {
+        private Node<T> add(Node<T> node, T value) {
             if (node == null) {
-                node = new Node<>(value, null, null);
+                return new Node<>(value, null, null);
             }
-            else if (value.compareTo(node.value) < 0) {
-                add(node.left, value);
+            if (value.compareTo(node.value) < 0) {
+                node.left = add(node.left, value);
             }
             else {
-                add(node.right, value);
+                node.right = add(node.right, value);
             }
+            return node;
+        }
+
+        private Node<T> successor(Node<T> node) {
+            Node<T> temp = node.right;
+            while (temp.left != null) {
+                temp = temp.left;
+            }
+            return temp;
         }
 
         public boolean remove(T value) {
-
+            return remove(root, value) != null;
         }
+
+        private Node<T> remove(Node<T> node, T value) {
+            if (node == null) {
+                return root;
+            }
+            int comp = value.compareTo(node.value);
+            if  (comp < 0) {
+                node = remove(node.left, value);
+            }
+            else if (comp > 0) {
+                node = remove(node.right, value);
+            }
+            else if (node.left != null && node.right != null) {
+                node.value = successor(node).value;
+                node.right = remove(node.right, node.value);
+            }
+            else {
+                if (node.left != null) {
+                    node = node.left;
+                }
+                else {
+                    node = node.right;
+                }
+            }
+            return node;
+        }
+
+        public void traverse() {
+            traverse(root);
+        }
+
+        private void traverse(Node<T> node) {
+            if (node != null) {
+                traverse(node.left);
+                if (node.right == null && node.left == null) {
+                    System.out.print(node.value + " ");
+                }
+                traverse(node.right);
+            }
+        }
+
+        public int getSize() {
+            return size;
+        }
+
+        public boolean isEmpty() {
+            return size == 0;
+        }
+    }
+
+
+    public static void main(String[] args) {
+        int size = 0;
+        String nums;
+        ITree<Integer> tree = new ITree<>();
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
+            size = Integer.parseInt(in.readLine());
+            nums = in.readLine();
+        }
+        catch (IOException e) {
+            nums = "";
+            e.printStackTrace();
+        }
+        StringTokenizer separatedNums = new StringTokenizer(nums, " ");
+        for (int i = 0; i < size; i++) {
+            tree.add(Integer.parseInt(separatedNums.nextToken()));
+        }
+        tree.traverse();
     }
 
 }
