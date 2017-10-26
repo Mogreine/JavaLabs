@@ -1,7 +1,9 @@
 package package6;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 public class Market {
@@ -22,29 +24,32 @@ public class Market {
     }
 
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int cashboxAmount = in.nextInt();
-        ArrayList<Integer> serviceTime = new ArrayList<>(cashboxAmount);
-        TreeSet<pair<Integer, Integer>> queue = new TreeSet<>();
-        for (int i = 0; i < cashboxAmount; i++) {
-            serviceTime.add(in.nextInt());
-            queue.add(new pair<>(0, i));
+        int availableDocs = 0;
+        StringBuilder tempDocs = new StringBuilder();
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
+            availableDocs = Integer.parseInt(in.readLine());
+            for (int i = 0; i < availableDocs; i++) {
+                tempDocs.append(in.readLine()).append(" ");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        int buyerAmount = in.nextInt();
-        ArrayList<Integer> purchases = new ArrayList<>(buyerAmount);
-        for (int i = 0; i < buyerAmount; i++) {
-            purchases.add(in.nextInt());
+        StringTokenizer docs = new StringTokenizer(tempDocs.toString()," ");
+        TreeSet<String> requiredDocs = new TreeSet<>();
+        TreeSet<String> students = new TreeSet<>();
+        TreeSet<pair<String, String>> ss = new TreeSet<>();
+        int uniqueDocs = 0;
+        for (int i = 0; i < availableDocs; i++) {
+            String doc = docs.nextToken();
+            String student = docs.nextToken();
+            requiredDocs.add(doc);
+            students.add(student);
+            if (ss.add(new pair<>(doc, student))) {
+                uniqueDocs++;
+            }
         }
-        ArrayList<Integer> output = new ArrayList<>(buyerAmount);
-        for (int i = 0; i < purchases.size(); i++) {
-            pair<Integer, Integer> lowest = queue.pollFirst();
-            lowest.first += purchases.get(i) * serviceTime.get(lowest.second);
-            queue.add(lowest);
-            output.add(lowest.second + 1);
-        }
-        for (int i = 0; i < output.size(); i++) {
-            System.out.print(output.get(i) + " ");
-        }
+        int missingDocs = requiredDocs.size() * students.size() - uniqueDocs;
+        System.out.print(missingDocs);
     }
 
 }
