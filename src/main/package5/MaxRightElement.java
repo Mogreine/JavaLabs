@@ -1,4 +1,4 @@
-package main;
+package main.package5;
 
 import java.util.Scanner;
 import java.util.Stack;
