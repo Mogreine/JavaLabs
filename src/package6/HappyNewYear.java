@@ -53,7 +53,7 @@ public class HappyNewYear {
                 afterMax = true;
             }
         }
-        if (box.lastKey() == maxSweetsInd) {
+        if (box.size() == 0 || box.lastKey() == maxSweetsInd) {
             maxSweetsInd = boxes;
         }
         System.out.print(maxSweetsInd);
