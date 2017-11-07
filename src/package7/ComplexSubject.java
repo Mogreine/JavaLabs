@@ -20,13 +20,24 @@ public class ComplexSubject {
         in.nextLine();
         for (int i = 0; i < m; i++) {
             subs = new StringTokenizer(in.nextLine(), " ");
-            g.get(subs.nextToken()).add(subs.nextToken());
+            String tmp = subs.nextToken();
+            g.get(subs.nextToken()).add(tmp);
         }
-        for (Map.Entry<String, Integer> sub : subjects.entrySet()) {
+        //ArrayList<String> levels = new ArrayList<String>();
+        /*for (Map.Entry<String, Integer> sub : subjects.entrySet()) {
             if (sub.getValue() == -1) {
-                dfs(g, subjects, sub.getKey(), 0);
+                dfs(g, subjects, sub.getKey());
+            }
+        }*/
+
+        for (int i = 0; i < n; i++) {
+            for (Map.Entry<String, ArrayList<String>> ss : g.entrySet()) {
+                if (ss.getValue().size() == i) {
+                    dfs(g, subjects, ss.getKey());
+                }
             }
         }
+
         int max = Collections.max(subjects.values());
         for (Map.Entry<String, Integer> sub : subjects.entrySet()) {
             if (sub.getValue() == max) {
@@ -36,13 +47,18 @@ public class ComplexSubject {
         in.close();
     }
 
-    static void dfs(TreeMap<String, ArrayList<String>> g, TreeMap<String, Integer> subjects, String v, int deep) {
-        if (deep > subjects.get(v)) {
-            subjects.put(v, deep);
-        }
+    static int dfs(TreeMap<String, ArrayList<String>> g, TreeMap<String, Integer> subjects, String v) {
+        int dd = 0;
         for (String vv : g.get(v)) {
-            dfs(g, subjects, vv, deep + 1);
+            if (subjects.get(vv) == -1) {
+                dd = Math.max(dfs(g, subjects, vv), dd);
+            }
+            else  {
+                dd = Math.max(subjects.get(vv) + 1, dd);
+            }
         }
+        subjects.put(v, dd);
+        return dd + 1;
     }
 
 }
