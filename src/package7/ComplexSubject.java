@@ -1,27 +1,36 @@
 package package7;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class ComplexSubject {
 
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int n = in.nextInt();
-        in.nextLine();
+        StringBuilder task = new StringBuilder();
+        int m = 0;
+        try (BufferedReader in2  = new BufferedReader(new InputStreamReader(System.in))) {
+            task.append(in2.readLine()).append(" ").append(in2.readLine()).append(" ");
+            m = Integer.parseInt(in2.readLine());
+            for (int i = 0; i < m; i++) {
+                task.append(in2.readLine()).append(" ");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        StringTokenizer ff = new StringTokenizer(task.toString(), " ");
+        int n = Integer.parseInt(ff.nextToken());
         TreeMap<String, ArrayList<String>> g = new TreeMap<String, ArrayList<String>>();
         TreeMap<String, Integer> subjects = new TreeMap<String, Integer>();
-        StringTokenizer subs = new StringTokenizer(in.nextLine(), " ");
-        while (subs.hasMoreTokens()) {
-            String temp = subs.nextToken();
+        for (int i = 0; i < n; i++) {
+            String temp = ff.nextToken();
             g.put(temp, new ArrayList<String>());
             subjects.put(temp, -1);
         }
-        int m = in.nextInt();
-        in.nextLine();
         for (int i = 0; i < m; i++) {
-            subs = new StringTokenizer(in.nextLine(), " ");
-            String tmp = subs.nextToken();
-            g.get(subs.nextToken()).add(tmp);
+            String tmp = ff.nextToken();
+            g.get(ff.nextToken()).add(tmp);
         }
         boolean isCircle = false;
         TreeMap<String, Integer> u = new TreeMap<String, Integer>(subjects);
@@ -44,7 +53,6 @@ public class ComplexSubject {
                 }
             }
         }
-        in.close();
     }
 
     static int dfs(TreeMap<String, ArrayList<String>> g, TreeMap<String, Integer> subjects, TreeMap<String, Integer> u, String v) {
