@@ -23,41 +23,54 @@ public class ComplexSubject {
             String tmp = subs.nextToken();
             g.get(subs.nextToken()).add(tmp);
         }
-        //ArrayList<String> levels = new ArrayList<String>();
-        /*for (Map.Entry<String, Integer> sub : subjects.entrySet()) {
+        boolean isCircle = false;
+        TreeMap<String, Integer> u = new TreeMap<String, Integer>(subjects);
+        for (Map.Entry<String, Integer> sub : subjects.entrySet()) {
             if (sub.getValue() == -1) {
-                dfs(g, subjects, sub.getKey());
-            }
-        }*/
-
-        for (int i = 0; i < n; i++) {
-            for (Map.Entry<String, ArrayList<String>> ss : g.entrySet()) {
-                if (ss.getValue().size() == i) {
-                    dfs(g, subjects, ss.getKey());
+                if (dfs(g, subjects, u, sub.getKey()) == -1) {
+                    isCircle = true;
+                    break;
                 }
             }
         }
-
-        int max = Collections.max(subjects.values());
-        for (Map.Entry<String, Integer> sub : subjects.entrySet()) {
-            if (sub.getValue() == max) {
-                System.out.print(sub.getKey() + " ");
+        if (isCircle) {
+            System.out.println("Impossible");
+        }
+        else {
+            int max = Collections.max(subjects.values());
+            for (Map.Entry<String, Integer> sub : subjects.entrySet()) {
+                if (sub.getValue() == max) {
+                    System.out.print(sub.getKey() + " ");
+                }
             }
         }
         in.close();
     }
 
-    static int dfs(TreeMap<String, ArrayList<String>> g, TreeMap<String, Integer> subjects, String v) {
+    static int dfs(TreeMap<String, ArrayList<String>> g, TreeMap<String, Integer> subjects, TreeMap<String, Integer> u, String v) {
+        u.put(v, 1);
+        boolean isCircle = false;
         int dd = 0;
         for (String vv : g.get(v)) {
-            if (subjects.get(vv) == -1) {
-                dd = Math.max(dfs(g, subjects, vv), dd);
+            if (u.get(vv) == 1) {
+                return -1;
+            }
+            else if (subjects.get(vv) == -1) {
+                int smth = dfs(g, subjects, u, vv);
+                if (smth == -1) {
+                    isCircle = true;
+                }
+                dd = Math.max((smth), dd);
             }
             else  {
                 dd = Math.max(subjects.get(vv) + 1, dd);
             }
+            if (isCircle) {
+                return -1;
+            }
         }
         subjects.put(v, dd);
+        u.put(v, 2);
         return dd + 1;
     }
 

@@ -72,7 +72,12 @@ public class Bridges {
                 dfs(g, bridges, u, deep, deepUp, g.get(v).get(i), v);
                 deepUp[v] = Math.min(deepUp[v], deepUp[g.get(v).get(i)]);
                 if (deepUp[g.get(v).get(i)] > deep[v]) {
-                    bridges.add(new Edge(v, g.get(v).get(i)));
+                    if (v <= g.get(v).get(i)) {
+                        bridges.add(new Edge(v, g.get(v).get(i)));
+                    }
+                    else {
+                        bridges.add(new Edge(g.get(v).get(i), v));
+                    }
                 }
             }
             else if (g.get(v).get(i) != p) {
